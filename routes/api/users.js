@@ -41,8 +41,7 @@ router.post('/',[
         const salt = await bcrypt.genSalt(10) //hash level 10 for the password
         user.password = await bcrypt.hash(password,salt)
 
-        await user.save()
-        res.send('User registered')
+        await user.save()        
 
         const payload = {  //for initiating the json web token
             user : {
@@ -51,7 +50,7 @@ router.post('/',[
         }
 
         jwt.sign(payload, config.get('jwtSecret'),(err,token)=>{
-            if(err) throw err
+            if(err) throw err;
             res.json({token})
         })
     } catch (error) {
@@ -61,4 +60,4 @@ router.post('/',[
 
 })
 
-module.exports = router   // author :subhadip
+module.exports = router   //  git push mern master 
