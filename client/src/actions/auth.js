@@ -57,3 +57,34 @@ export const register = ({name, email, password}) => async dispatch => {
         })
     }
 }
+
+//Login user
+export const login = (email, password) => async dispatch => {
+    const config ={
+        headers : {
+            'Content-Type' : 'application/json'
+        }
+    }
+
+    const body = JSON.stringify({email,password})
+
+    try {
+        //goto server side/backend 
+        // API call
+        const res = await axios.post('/api/auth', body, config)
+        // if success dispacth an Action & go to Reducer
+        dispatch({
+            type : LOGIN_SUCCESS,
+            payload : res.data
+        })
+    } catch (err) {
+        // if failure dispacth an Action & go to Reducer
+        const errors = err.respose.data.errors
+        if(errors) {
+            errors.forEach(error => dispatch(setAlert(error.msg,'danger')))
+        }
+        dispatch({
+            type : LOGIN_FAIL
+        })
+    }
+}
